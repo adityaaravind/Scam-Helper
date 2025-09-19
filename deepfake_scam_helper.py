@@ -173,12 +173,15 @@ with tab2:
     else:
         uploaded_file = st.file_uploader("🎧 Upload audio file (wav/mp3)", type=["wav", "mp3"])
         if st.button("🔊 Analyze Audio"):
-           if uploaded_file is None:
+            if uploaded_file is None:
                 st.warning("⚠️ Please upload an audio file.")
-                else:
-                    with tempfile.NamedTemporaryFile(delete=False, suffix=".wav") as tmp:
+            else:
+                with tempfile.NamedTemporaryFile(delete=False, suffix=".wav") as tmp:
                     tmp.write(uploaded_file.read())
                     temp_path = tmp.name
+
+                transcript = transcribe_audio(temp_path)
+                os.remove(temp_path)
 
             if transcript:
                 warnings = detect_impersonation_clues(transcript)
