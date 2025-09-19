@@ -3,7 +3,11 @@ import re
 import difflib
 import tempfile
 import os
-import speech_recognition as sr
+try:
+    import speech_recognition as sr
+    SR_AVAILABLE = True
+except ModuleNotFoundError:
+    SR_AVAILABLE = False
 
 st.set_page_config(page_title="Deepfake / Voice Scam Detection Helper", page_icon="🔊", layout="wide")
 
@@ -164,8 +168,11 @@ with tab1:
             show_dynamic_recommendations(categories)
 
 with tab2:
-    uploaded_file = st.file_uploader("🎧 Upload audio file (wav/mp3)", type=["wav", "mp3"])
-    if st.button("🔊 Analyze Audio"):
+    if not SR_AVAILABLE:
+        st.error("🎧 Audio analysis is unavailable. Install `SpeechRecognition` to enable this feature.")
+    else:
+        uploaded_file = st.file_uploader("🎧 Upload audio file (wav/mp3)", type=["wav", "mp3"])
+        if st.button("🔊 Analyze Audio"):
         if uploaded_file is None:
             st.warning("⚠️ Please upload an audio file.")
         else:
