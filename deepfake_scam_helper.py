@@ -175,8 +175,8 @@ with tab2:
         if st.button("🔊 Analyze Audio"):
            if uploaded_file is None:
                 st.warning("⚠️ Please upload an audio file.")
-            else:
-                with tempfile.NamedTemporaryFile(delete=False, suffix=".wav") as tmp:
+                else:
+                    with tempfile.NamedTemporaryFile(delete=False, suffix=".wav") as tmp:
                     tmp.write(uploaded_file.read())
                     temp_path = tmp.name
 
